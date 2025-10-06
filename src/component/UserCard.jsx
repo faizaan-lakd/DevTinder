@@ -12,7 +12,7 @@ const UserCard = ({ user }) => {
         <h2 className="card-title">{firstName + " " + lastName}</h2>
         {age && gender && <p>{age + ", " + gender}</p>}
         <p>{about}</p>
-        <div className="card-actions justify-between">
+        <div className="card-actions justify-between my-4 pt-2">
           <button className="btn btn-primary">Ignore</button>
           <button className="btn btn-secondary">Interested</button>
         </div>

@@ -1,6 +1,6 @@
 import React from "react";
 
-const UserCard = ({ user, type }) => {
+const UserCard = ({ user, type, onButtonClick, requestId }) => {
   const { firstName, lastName, photoUrl, age, gender, about } = user;
 
   return (
@@ -20,8 +20,18 @@ const UserCard = ({ user, type }) => {
         )}
         {type == 2 && (
           <div className="card-actions justify-between my-4 pt-2">
-            <button className="btn btn-primary">Reject</button>
-            <button className="btn btn-secondary">Accept</button>
+            <button
+              className="btn btn-primary"
+              onClick={() => onButtonClick("rejected", requestId)}
+            >
+              Reject
+            </button>
+            <button
+              className="btn btn-secondary"
+              onClick={() => onButtonClick("accepted", requestId)}
+            >
+              Accept
+            </button>
           </div>
         )}
       </div>

@@ -19,6 +19,7 @@ const Feed = () => {
         withCredentials: true,
       });
       dispatch(addFeed(res?.data?.data));
+      console.log(res.data.data);
     } catch {
       // TODO add error page.
     }
@@ -28,12 +29,18 @@ const Feed = () => {
     getFeed();
   }, []);
 
+  if (!feed) {
+    return;
+  } else if (feed.length === 0) {
+    return (
+      <h1 className="text-bold text-xl text-center m-10">No feed found.</h1>
+    );
+  }
+
   return (
-    feed && (
-      <div className="flex justify-center items-center min-h-[80vh]">
-        <UserCard user={feed[0]} />
-      </div>
-    )
+    <div className="flex justify-center items-center min-h-[80vh] mt-5 my-16">
+      <UserCard user={feed[0]} type={1} key={feed[0]._id} />
+    </div>
   );
 };
 

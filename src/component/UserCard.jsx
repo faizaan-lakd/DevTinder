@@ -1,7 +1,7 @@
 import React from "react";
 
 const UserCard = ({ user, type, onButtonClick, requestId }) => {
-  const { firstName, lastName, photoUrl, age, gender, about } = user;
+  const { _id, firstName, lastName, photoUrl, age, gender, about } = user;
 
   return (
     <div className="card bg-base-200 w-96 shadow-sm mb-10">
@@ -14,8 +14,18 @@ const UserCard = ({ user, type, onButtonClick, requestId }) => {
         <p>{about}</p>
         {type == 1 && (
           <div className="card-actions justify-between my-4 pt-2">
-            <button className="btn btn-primary">Ignore</button>
-            <button className="btn btn-secondary">Interested</button>
+            <button
+              className="btn btn-primary"
+              onClick={() => onButtonClick("ignored", _id)}
+            >
+              Ignore
+            </button>
+            <button
+              className="btn btn-secondary"
+              onClick={() => onButtonClick("interested", _id)}
+            >
+              Interested
+            </button>
           </div>
         )}
         {type == 2 && (

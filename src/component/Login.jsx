@@ -6,9 +6,12 @@ import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
 
 const Login = () => {
-  const [emailId, setEmailId] = useState("james@potter.com");
-  const [password, setPassword] = useState("James@123");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [emailId, setEmailId] = useState("");
+  const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoginForm, setIsLoginForm] = useState(true);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,12 +35,82 @@ const Login = () => {
     }
   };
 
+  const handleSignUp = async () => {
+    try {
+      const res = await axios.post(
+        BASE_URL + "/signup",
+        { firstName, lastName, emailId, password },
+        { withCredentials: true }
+      );
+      dispatch(addUser(res?.data?.data));
+      navigate("/profile");
+    } catch (err) {
+      setErrorMessage(err?.response?.data || "Something went wrong!");
+    }
+  };
+
   return (
-    <div className="flex justify-center items-center my-3 min-h-[80vh]">
+    <div className="flex justify-center items-center my-3 min-h-[80vh] mb-16">
       <div className="card bg-base-200 w-96 shadow-xl">
         <div className="card-body">
-          <h2 className="card-title justify-center">Login</h2>
+          <h2 className="card-title justify-center">
+            {isLoginForm ? "Login" : "Sign Up"}
+          </h2>
           <div className="py-3">
+            {!isLoginForm && (
+              <>
+                <label className="input input-bordered flex items-center gap-2 mb-3">
+                  <svg
+                    className="h-[1em] opacity-50"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                  >
+                    <g
+                      strokeLinejoin="round"
+                      strokeLinecap="round"
+                      strokeWidth="2.5"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </g>
+                  </svg>
+                  <input
+                    type="text"
+                    className="grow"
+                    placeholder="First Name"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                  />
+                </label>
+                <label className="input input-bordered flex items-center gap-2 mb-3">
+                  <svg
+                    className="h-[1em] opacity-50"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                  >
+                    <g
+                      strokeLinejoin="round"
+                      strokeLinecap="round"
+                      strokeWidth="2.5"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </g>
+                  </svg>
+                  <input
+                    type="text"
+                    className="grow"
+                    placeholder="Last Name"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                  />
+                </label>
+              </>
+            )}
             <label className="input input-bordered flex items-center gap-2 mb-3">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -80,10 +153,21 @@ const Login = () => {
           </div>
           <p className="text-red-500">{errorMessage}</p>
           <div className="card-actions justify-center">
-            <button className="btn btn-primary" onClick={handleLogin}>
-              Login
+            <button
+              className="btn btn-primary"
+              onClick={isLoginForm ? handleLogin : handleSignUp}
+            >
+              {isLoginForm ? "Login" : "Sign Up"}
             </button>
           </div>
+          <p
+            className="m-auto cursor-pointer pt-3"
+            onClick={() => setIsLoginForm((value) => !value)}
+          >
+            {isLoginForm
+              ? "New User? Signup here"
+              : "Existing User? Login here"}
+          </p>
         </div>
       </div>
     </div>
